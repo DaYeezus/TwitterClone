@@ -4,17 +4,11 @@ import {useRouter} from "next/router";
 
 const Layout = ({children}) => {
     const router = useRouter()
-<<<<<<< HEAD
-    const [currentPage ,setCurrentPage] = useState(router.pathname.replace("/" , ""))
-    useEffect(() => {
-        setCurrentPage(router.pathname.replace("/" , ""))
-    } , [router.pathname])
-=======
     const [currentPage, setCurrentPage] = useState(router.pathname.replace("/", ""))
     useEffect(() => {
         setCurrentPage(router.pathname.replace("/", ""))
     }, [router.pathname])
->>>>>>> aae583a (finish side bar)
+
     return (
         <Fragment>
             <Head>

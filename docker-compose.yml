@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  client:
+    build : ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+  server:
+    build: ./server
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URL : "mongodb://twitter_mongo/twitter-clone"
+      REDIS_URL : "redis://twitter_redis/"
+      RUNNING_PORT : 5000
+    volumes:
+      - ./server:/app
+  mongo:
+    image: mongo:4.0-xenial
+    ports:
+      - "27018:27017"
+    volumes:
+      - twitter-clone:/data/db
+    container_name: twitter_mongo
+  redis:
+    image: redis:alpine
+    command:
+      - redis-server
+    ports:
+      - "6379:6379"
+    container_name: twitter_redis
+    volumes:
+      - redis-data:/data
+      - redis-conf:/usr/local/etc/redis/redis.conf
+volumes:
+  twitter-clone:
+  redis-data:
+  redis-conf:
+
