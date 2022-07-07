@@ -6,8 +6,10 @@ const cors = require("cors");
 const configureMongoose = require("./conf/mongodbConfigurations")
 const {MainRouter} = require("./routes/main.router");
 const createHttpError = require("http-errors")
+
 class Server {
     #app = express()
+
     constructor() {
         this.configureApplication()
         this.configureServer()
@@ -15,29 +17,34 @@ class Server {
         this.configureRoutes()
         this.configureHandlers()
     }
-    configureApplication(){
+
+    configureApplication() {
         this.#app.use(helmet())
         this.#app.use(morgan("dev"))
-        this.#app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+        this.#app.use(cors({credentials: true, origin: "http://localhost:3000"}));
         this.#app.use(express.json())
-        this.#app.use(express.urlencoded({extended:true}))
-        this.#app.use(express.static(path.join(__dirname , ".." , "public")))
+        this.#app.use(express.urlencoded({extended: true}))
+        this.#app.use(express.static(path.join(__dirname, "..", "public")))
     }
-    configureServer(){
-        this.#app.listen(process.env.RUNNING_PORT ,  () => {
-            console.log(`Running > http://localhost:${process.env.RUNNING_PORT}`)
-        }
+
+    configureServer() {
+        this.#app.listen(process.env.RUNNING_PORT, () => {
+                console.log(`Running > http://localhost:${process.env.RUNNING_PORT}`)
+            }
         )
     }
-    configureDataBases(){
+
+    configureDataBases() {
         configureMongoose(process.env.MONGO_URL)
         require("./conf/redisConfigurations")
     }
-    configureRoutes(){
+
+    configureRoutes() {
         this.#app.use(MainRouter)
     }
-    configureHandlers(){
-        this.#app.use((req,res,next) => {
+
+    configureHandlers() {
+        this.#app.use((req, res, next) => {
             next(createHttpError.NotFound("Path you looking for is not found"))
         })
         this.#app.use((error, req, res, next) => {
@@ -53,6 +60,7 @@ class Server {
         });
     }
 }
-module.exports ={
+
+module.exports = {
     Server
 }

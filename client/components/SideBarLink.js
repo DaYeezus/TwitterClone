@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SideBarLink = ({text ,Icon, isActive}) => {
+const SideBarLink = ({text, Icon, isActive}) => {
     return (
         <div
             className={`text-[#d9d9d9] flex items-center justify-center xl:justify-start text-xl space-x-3 hoverAnimation ${isActive && "font-bold"}`}>
